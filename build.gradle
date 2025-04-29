@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group 'ias.com.co'
+version '1.0-SNAPSHOT'
+
+ext {
+    karateVersion = '1.4.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    // Traer de las opciones de karate en el tiempo de ejecución
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    // Traer de karate env en el tiempo de ejecución
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    // Asegurar que las pruebas siempre se ejecuten
+    outputs.upToDateWhen { false }
+}
+
+
+gradle.startParameter.refreshDependencies = true
